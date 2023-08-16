@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jarvlis.usercenter.mapper.userMapper">
+
+    <resultMap id="BaseResultMap" type="com.jarvlis.usercenter.model.domain.User">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="user_name" column="user_name" jdbcType="VARCHAR"/>
+            <result property="user_account" column="user_account" jdbcType="VARCHAR"/>
+            <result property="avatar_url" column="avatar_url" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="TINYINT"/>
+            <result property="user_password" column="user_password" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="user_status" column="user_status" jdbcType="INTEGER"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="is_delete" column="is_delete" jdbcType="TINYINT"/>
+            <result property="user_role" column="user_role" jdbcType="INTEGER"/>
+            <result property="planet_code" column="planet_code" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_name,user_account,
+        avatar_url,gender,user_password,
+        phone,email,user_status,
+        create_time,update_time,is_delete,
+        user_role,planet_code
+    </sql>
+</mapper>
