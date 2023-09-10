@@ -2,9 +2,9 @@ spring:
   # DataSource Config
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: love202020
-    url: jdbc:mysql://localhost:3306/universe
+    username: # 数据库账号
+    password:  # 数据库密码
+    url:       # 填入你的数据库地址
   # session timeout
   session:
     timeout: 100000

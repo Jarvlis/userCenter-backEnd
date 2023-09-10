@@ -26,8 +26,10 @@ import static com.jarvlis.usercenter.constant.UserConstant.USER_LOGIN_STATE;
  * Date:2023-04-17
  * Time:11:09
  */
+
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = {"http://jarvlis.top", "http://localhost:8000"}, allowCredentials = "true")
 public class userController {
 
     //controller里面要调用业务逻辑,需要引入service
