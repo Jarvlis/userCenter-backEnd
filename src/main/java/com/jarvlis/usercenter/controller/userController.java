@@ -8,6 +8,7 @@ import com.jarvlis.usercenter.exception.BussinessException;
 import com.jarvlis.usercenter.model.domain.request.UserLoginRequest;
 import com.jarvlis.usercenter.model.domain.request.UserRegisterRequest;
 import com.jarvlis.usercenter.model.domain.User;
+import com.jarvlis.usercenter.model.domain.request.UserSearchRequest;
 import com.jarvlis.usercenter.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,7 @@ public class userController {
         long res = userService.userRegister(account, password, checkKey, planetCode);
         return ResultUtils.success(res);
     }
+
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
@@ -88,14 +90,36 @@ public class userController {
         return ResultUtils.success(safetyUser);
     }
 
-    @GetMapping("/search")
-    public BaseResponse<List<User>> searchUsers(String username, HttpServletRequest request){
+    @PostMapping("/search")
+    public BaseResponse<List<User>> searchUsers(@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request){
+        System.out.println(userSearchRequest);
         if(!isAdmin(request)){
            throw new BussinessException(ErrorCode.PARAMS_ERROR);
         }
+        String userName = userSearchRequest.getUser_name();
+        String userAccount = userSearchRequest.getUser_account();
+        String planetCode = userSearchRequest.getPlanet_code();
+        String phone = userSearchRequest.getPhone();
+        int userRole = userSearchRequest.getUser_role();
+        int userStatus = userSearchRequest.getUser_status();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        if(StringUtils.isNotBlank(username)){
-            queryWrapper.like("username", username);
+        if(StringUtils.isNotBlank(userName)){
+            queryWrapper.like("user_name", userName);
+        }
+        if(StringUtils.isNotBlank(userAccount)){
+            queryWrapper.like("user_account", userAccount);
+        }
+        if(StringUtils.isNotBlank(planetCode)){
+            queryWrapper.like("planet_code", planetCode);
+        }
+        if(StringUtils.isNotBlank(phone)){
+            queryWrapper.like("phone", phone);
+        }
+        if(userRole != -1){
+            queryWrapper.like("planet_code", userRole);
+        }
+        if(userStatus != -2){
+            queryWrapper.like("user_status",userStatus);
         }
         List<User> userList = userService.list(queryWrapper);
         List<User> collect = userList.stream().map(user -> userService.getSafetyUser(user)).collect(Collectors.toList());
