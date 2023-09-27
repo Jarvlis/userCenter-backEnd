@@ -5,6 +5,7 @@ import com.jarvlis.usercenter.common.BaseResponse;
 import com.jarvlis.usercenter.common.ErrorCode;
 import com.jarvlis.usercenter.common.ResultUtils;
 import com.jarvlis.usercenter.exception.BussinessException;
+import com.jarvlis.usercenter.model.domain.request.UserDeleteRequest;
 import com.jarvlis.usercenter.model.domain.request.UserLoginRequest;
 import com.jarvlis.usercenter.model.domain.request.UserRegisterRequest;
 import com.jarvlis.usercenter.model.domain.User;
@@ -127,8 +128,9 @@ public class userController {
     }
 
     @PostMapping("/delete")
-    public BaseResponse<Boolean> deleteUser(@RequestBody long id, HttpServletRequest request){
-        if(isAdmin(request)){
+    public BaseResponse<Boolean> deleteUser(@RequestBody UserDeleteRequest userDeleteRequest, HttpServletRequest request){
+        long id = userDeleteRequest.getId();
+        if(!isAdmin(request)){
             throw new BussinessException(ErrorCode.NO_AUTH);
         }
         if(id <= 0){
