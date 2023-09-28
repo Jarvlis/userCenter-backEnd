@@ -5,16 +5,14 @@ import com.jarvlis.usercenter.common.BaseResponse;
 import com.jarvlis.usercenter.common.ErrorCode;
 import com.jarvlis.usercenter.common.ResultUtils;
 import com.jarvlis.usercenter.exception.BussinessException;
-import com.jarvlis.usercenter.model.domain.request.UserDeleteRequest;
-import com.jarvlis.usercenter.model.domain.request.UserLoginRequest;
-import com.jarvlis.usercenter.model.domain.request.UserRegisterRequest;
+import com.jarvlis.usercenter.model.domain.request.*;
 import com.jarvlis.usercenter.model.domain.User;
-import com.jarvlis.usercenter.model.domain.request.UserSearchRequest;
 import com.jarvlis.usercenter.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -137,6 +135,41 @@ public class userController {
             throw new BussinessException(ErrorCode.PARAMS_ERROR);
         }
         boolean res = userService.removeById(id);
+        return ResultUtils.success(res);
+    }
+
+    @PostMapping("/save")
+    public BaseResponse<Boolean> saveUser(@RequestBody UserSaveRequest userSaveRequest, HttpServletRequest request){
+        if(!isAdmin(request)){
+            throw new BussinessException(ErrorCode.NO_AUTH);
+        }
+
+        User user = new User();
+        long id = userSaveRequest.getId();
+        String name = userSaveRequest.getUser_name();
+        String account = userSaveRequest.getUser_account();
+        String phone = userSaveRequest.getPhone();
+        String planetCode= userSaveRequest.getPlanet_code();
+        int gender = userSaveRequest.getGender();
+        String email = userSaveRequest.getEmail();
+        String avatarUrl = userSaveRequest.getAvatar_url();
+        int userRole = userSaveRequest.getUser_role();
+        int userStatus = userSaveRequest.getUser_status();
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+
+        user.setPlanet_code(planetCode);
+        user.setUser_name(name);
+        user.setUser_account(account);
+        user.setPhone(phone);
+        user.setGender(gender);
+        user.setUser_role(userRole);
+        user.setEmail(email);
+        user.setAvatar_url(avatarUrl);
+        user.setUser_status(userStatus);
+
+        boolean res = userService.update(user, queryWrapper);
         return ResultUtils.success(res);
     }
 

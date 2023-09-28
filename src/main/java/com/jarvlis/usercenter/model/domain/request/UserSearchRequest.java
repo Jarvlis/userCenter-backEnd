@@ -14,6 +14,8 @@ public class UserSearchRequest implements Serializable {
 
     private static final long serialVersionUID = 7284044343178356992L;
 
+    private long id;
+
     private int current;
 
     private int pageSize;
